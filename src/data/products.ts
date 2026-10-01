@@ -1,9 +1,16 @@
 import { Product } from '../types';
 
-import copperRodsImg from '../assets/images/rudra_copper_bonded_rods_1790859134733.jpg';
-import arresterImg from '../assets/images/rudra_lightning_arrester_1790859164679.jpg';
-import factoryImg from '../assets/images/rudra_factory_manufacturing_1790859150262.jpg';
-import heroSubstationImg from '../assets/images/rudra_hero_substation_1790859117610.jpg';
+import copperBondedRodImg from '../assets/images/copper bonded earthing rod.png';
+import copperBondedElectrodeImg from '../assets/images/copper bonded earthing electrode.png';
+import fourGCopperBondedRodImg from '../assets/images/4g copper bonded earthing rod.png';
+import giEarthingElectrodeImg from '../assets/images/gi earthing electrode.png';
+import giEarthingCopperTerminalImg from '../assets/images/gi earthing electrode with  copper terminal.png';
+import pureCopperEarthingElectrodeImg from '../assets/images/pure copper earthing electrode.png';
+import eseLightningArresterImg from '../assets/images/ese lightning arrester.png';
+import conventionalLightningArresterImg from '../assets/images/conventional lightning arrester.png';
+import solarEarthingKitImg from '../assets/images/solar earthing kit.png';
+import earthBackfillCompoundImg from '../assets/images/earth backfill compound.png';
+import earthPitCoverImg from '../assets/images/earth pit cover.png';
 
 export const initialProducts: Product[] = [
   {
@@ -12,13 +19,12 @@ export const initialProducts: Product[] = [
     slug: 'copper-bonded-earthing-rod',
     category: 'rods',
     categoryLabel: 'Earthing Electrodes & Rods',
-    shortDesc: 'High performance copper bonded earthing rods designed for superior conductivity, longer life and reliable grounding in all soil conditions.',
-    fullDesc: 'Our copper bonded earthing rods are manufactured using high-grade low carbon steel core with a molecularly bonded copper layer (minimum 250 microns), ensuring excellent conductivity, corrosion resistance, and mechanical strength. These rods are ideal for industrial, commercial, and residential earthing applications, providing long-term and maintenance-free grounding performance.',
+    shortDesc:
+      'High performance copper bonded earthing rods designed for superior conductivity, longer life and reliable grounding in all soil conditions.',
+    fullDesc:
+      'Our copper bonded earthing rods are manufactured using high-grade low carbon steel core with a molecularly bonded copper layer (minimum 250 microns), ensuring excellent conductivity, corrosion resistance, and mechanical strength. These rods are ideal for industrial, commercial, and residential earthing applications, providing long-term and maintenance-free grounding performance.',
     images: [
-      copperRodsImg,
-      factoryImg,
-      heroSubstationImg,
-      copperRodsImg,
+      copperBondedRodImg,
     ],
     highlights: [
       'High Conductivity & Low Resistance',
@@ -49,10 +55,30 @@ export const initialProducts: Product[] = [
       'Oil, Gas & Petrochemical Plants',
     ],
     variants: [
-      { diameter: '14 mm', length: '1.5 / 2.4 / 3.0 m', copperLayer: '≥ 250 µm', partNumber: 'RUD-CBR-14' },
-      { diameter: '17.2 mm', length: '1.5 / 2.4 / 3.0 m', copperLayer: '≥ 250 µm', partNumber: 'RUD-CBR-17' },
-      { diameter: '20 mm', length: '1.5 / 2.4 / 3.0 m', copperLayer: '≥ 250 µm', partNumber: 'RUD-CBR-20' },
-      { diameter: '25 mm', length: '2.0 / 3.0 m', copperLayer: '≥ 254 µm', partNumber: 'RUD-CBR-25' },
+      {
+        diameter: '14 mm',
+        length: '1.5 / 2.4 / 3.0 m',
+        copperLayer: '≥ 250 µm',
+        partNumber: 'RUD-CBR-14',
+      },
+      {
+        diameter: '17.2 mm',
+        length: '1.5 / 2.4 / 3.0 m',
+        copperLayer: '≥ 250 µm',
+        partNumber: 'RUD-CBR-17',
+      },
+      {
+        diameter: '20 mm',
+        length: '1.5 / 2.4 / 3.0 m',
+        copperLayer: '≥ 250 µm',
+        partNumber: 'RUD-CBR-20',
+      },
+      {
+        diameter: '25 mm',
+        length: '2.0 / 3.0 m',
+        copperLayer: '≥ 254 µm',
+        partNumber: 'RUD-CBR-25',
+      },
     ],
     relatedProductIds: [
       'pure-copper-earthing-electrode',
@@ -62,19 +88,19 @@ export const initialProducts: Product[] = [
     ],
     isPopular: true,
   },
+
   {
     id: 'copper-bonded-earthing-electrode',
     name: 'Copper Bonded Earthing Electrode',
     slug: 'copper-bonded-earthing-electrode',
     category: 'electrodes',
     categoryLabel: 'Earthing Electrodes & Rods',
-    shortDesc: 'Pipe-in-pipe / Pipe-in-strip advanced copper bonded pipe electrode with high dissipation capacity and extended service lifespan.',
-    fullDesc: 'Rudra Copper Bonded Earthing Electrode features a dual-pipe or pipe-in-strip design manufactured with high quality electrical copper bonded outer tube filled with specially formulated highly conductive crystalline mineral compound. Designed to disperse high fault currents rapidly without thermal degradation.',
+    shortDesc:
+      'Pipe-in-pipe / Pipe-in-strip advanced copper bonded pipe electrode with high dissipation capacity and extended service lifespan.',
+    fullDesc:
+      'Rudra Copper Bonded Earthing Electrode features a dual-pipe or pipe-in-strip design manufactured with high quality electrical copper bonded outer tube filled with specially formulated highly conductive crystalline mineral compound. Designed to disperse high fault currents rapidly without thermal degradation.',
     images: [
-      copperRodsImg,
-      factoryImg,
-      heroSubstationImg,
-      copperRodsImg,
+      copperBondedElectrodeImg,
     ],
     highlights: [
       'Fast Fault Current Dissipation',
@@ -104,9 +130,24 @@ export const initialProducts: Product[] = [
       'Renewable Energy Parks',
     ],
     variants: [
-      { diameter: '40 mm', length: '2.0 m / 3.0 m', copperLayer: '≥ 250 µm', partNumber: 'RUD-CBE-40' },
-      { diameter: '50 mm', length: '2.0 m / 3.0 m', copperLayer: '≥ 250 µm', partNumber: 'RUD-CBE-50' },
-      { diameter: '80 mm', length: '3.0 m', copperLayer: '≥ 250 µm', partNumber: 'RUD-CBE-80' },
+      {
+        diameter: '40 mm',
+        length: '2.0 m / 3.0 m',
+        copperLayer: '≥ 250 µm',
+        partNumber: 'RUD-CBE-40',
+      },
+      {
+        diameter: '50 mm',
+        length: '2.0 m / 3.0 m',
+        copperLayer: '≥ 250 µm',
+        partNumber: 'RUD-CBE-50',
+      },
+      {
+        diameter: '80 mm',
+        length: '3.0 m',
+        copperLayer: '≥ 250 µm',
+        partNumber: 'RUD-CBE-80',
+      },
     ],
     relatedProductIds: [
       'copper-bonded-earthing-rod',
@@ -115,19 +156,19 @@ export const initialProducts: Product[] = [
     ],
     isPopular: true,
   },
+
   {
     id: '4g-copper-bonded-earthing-rod',
     name: '4G Copper Bonded Earthing Rod',
     slug: '4g-copper-bonded-earthing-rod',
     category: 'rods',
     categoryLabel: 'Earthing Electrodes & Rods',
-    shortDesc: 'Next-generation 4G heavy duty copper bonded rod with reinforced steel core and ultra-uniform 300+ micron copper deposition.',
-    fullDesc: 'The 4G Copper Bonded Earthing Rod is our flagship high-tensile grounding rod developed for critical infrastructure, defense, aviation, and super-grid substations. Features 4th generation continuous electroplating ensuring zero peeling, maximum impact driving strength, and exceptional conductivity.',
+    shortDesc:
+      'Next-generation 4G heavy duty copper bonded rod with reinforced steel core and ultra-uniform 300+ micron copper deposition.',
+    fullDesc:
+      'The 4G Copper Bonded Earthing Rod is our flagship high-tensile grounding rod developed for critical infrastructure, defense, aviation, and super-grid substations. Features 4th generation continuous electroplating ensuring zero peeling, maximum impact driving strength, and exceptional conductivity.',
     images: [
-      copperRodsImg,
-      heroSubstationImg,
-      factoryImg,
-      copperRodsImg,
+      fourGCopperBondedRodImg,
     ],
     highlights: [
       'Ultra Heavy 300+ Micron Layer',
@@ -156,9 +197,24 @@ export const initialProducts: Product[] = [
       'Expressway & Highway Toll Plazas',
     ],
     variants: [
-      { diameter: '17.2 mm', length: '3.0 m', copperLayer: '≥ 300 µm', partNumber: 'RUD-4G-17' },
-      { diameter: '20 mm', length: '3.0 m', copperLayer: '≥ 300 µm', partNumber: 'RUD-4G-20' },
-      { diameter: '25 mm', length: '3.0 m', copperLayer: '≥ 350 µm', partNumber: 'RUD-4G-25' },
+      {
+        diameter: '17.2 mm',
+        length: '3.0 m',
+        copperLayer: '≥ 300 µm',
+        partNumber: 'RUD-4G-17',
+      },
+      {
+        diameter: '20 mm',
+        length: '3.0 m',
+        copperLayer: '≥ 300 µm',
+        partNumber: 'RUD-4G-20',
+      },
+      {
+        diameter: '25 mm',
+        length: '3.0 m',
+        copperLayer: '≥ 350 µm',
+        partNumber: 'RUD-4G-25',
+      },
     ],
     relatedProductIds: [
       'copper-bonded-earthing-rod',
@@ -167,19 +223,19 @@ export const initialProducts: Product[] = [
     ],
     isPopular: true,
   },
+
   {
     id: 'gi-earthing-electrode',
     name: 'GI Earthing Electrode',
     slug: 'gi-earthing-electrode',
     category: 'electrodes',
     categoryLabel: 'GI Earthing Solutions',
-    shortDesc: 'Hot-dip galvanized pipe-in-pipe earthing electrode ensuring cost-effective, heavy-duty industrial grounding.',
-    fullDesc: 'Rudra GI (Galvanized Iron) Earthing Electrodes are manufactured with premium grade Class-B / Class-C pipes thoroughly hot-dip galvanized as per IS 4759 with zinc coating above 86 microns. Internally filled with non-hazardous conductive chemical compound for sustained moisture retention and low ground impedance.',
+    shortDesc:
+      'Hot-dip galvanized pipe-in-pipe earthing electrode ensuring cost-effective, heavy-duty industrial grounding.',
+    fullDesc:
+      'Rudra GI (Galvanized Iron) Earthing Electrodes are manufactured with premium grade Class-B / Class-C pipes thoroughly hot-dip galvanized as per IS 4759 with zinc coating above 86 microns. Internally filled with non-hazardous conductive chemical compound for sustained moisture retention and low ground impedance.',
     images: [
-      factoryImg,
-      copperRodsImg,
-      heroSubstationImg,
-      factoryImg,
+      giEarthingElectrodeImg,
     ],
     highlights: [
       'Uniform Hot-Dip Galvanized Zinc Layer',
@@ -208,9 +264,24 @@ export const initialProducts: Product[] = [
       'Rural Electrification Projects',
     ],
     variants: [
-      { diameter: '50 mm', length: '2.0 m / 3.0 m', copperLayer: '86 µm Zinc', partNumber: 'RUD-GI-50' },
-      { diameter: '65 mm', length: '2.0 m / 3.0 m', copperLayer: '86 µm Zinc', partNumber: 'RUD-GI-65' },
-      { diameter: '80 mm', length: '3.0 m', copperLayer: '100 µm Zinc', partNumber: 'RUD-GI-80' },
+      {
+        diameter: '50 mm',
+        length: '2.0 m / 3.0 m',
+        copperLayer: '86 µm Zinc',
+        partNumber: 'RUD-GI-50',
+      },
+      {
+        diameter: '65 mm',
+        length: '2.0 m / 3.0 m',
+        copperLayer: '86 µm Zinc',
+        partNumber: 'RUD-GI-65',
+      },
+      {
+        diameter: '80 mm',
+        length: '3.0 m',
+        copperLayer: '100 µm Zinc',
+        partNumber: 'RUD-GI-80',
+      },
     ],
     relatedProductIds: [
       'gi-earthing-electrode-copper-terminal',
@@ -218,19 +289,19 @@ export const initialProducts: Product[] = [
       'earth-pit-cover',
     ],
   },
+
   {
     id: 'gi-earthing-electrode-copper-terminal',
     name: 'GI Earthing Electrode with Copper Terminal',
     slug: 'gi-earthing-electrode-with-copper-terminal',
     category: 'electrodes',
     categoryLabel: 'GI Earthing Solutions',
-    shortDesc: 'Combines the rugged economy of galvanized steel body with a solid copper terminal for zero-oxidation connection.',
-    fullDesc: 'Engineered for applications where budget-friendly GI electrodes are preferred, but electrical connections must be made using copper strips or cables. The heavy-duty bi-metallic terminal is molecularly jointed to eliminate bimetallic corrosion and guarantee minimal joint resistance.',
+    shortDesc:
+      'Combines the rugged economy of galvanized steel body with a solid copper terminal for zero-oxidation connection.',
+    fullDesc:
+      'Engineered for applications where budget-friendly GI electrodes are preferred, but electrical connections must be made using copper strips or cables. The heavy-duty bi-metallic terminal is molecularly jointed to eliminate bimetallic corrosion and guarantee minimal joint resistance.',
     images: [
-      factoryImg,
-      copperRodsImg,
-      factoryImg,
-      heroSubstationImg,
+      giEarthingCopperTerminalImg,
     ],
     highlights: [
       'Bi-Metallic Joint Prevention Technology',
@@ -248,7 +319,8 @@ export const initialProducts: Product[] = [
       material: 'GI Pipe Body + Electrolytic Pure Copper Terminal Plate',
       diameter: '50 mm / 65 mm / 80 mm',
       length: '2.0 m / 3.0 m',
-      copperLayerThickness: 'Body: 90µm Zinc | Terminal: 100% Pure Copper',
+      copperLayerThickness:
+        'Body: 90µm Zinc | Terminal: 100% Pure Copper',
       tensileStrength: '≥ 440 N/mm²',
       standards: 'IS 3043, BS 7430, IEC 62561',
     },
@@ -259,9 +331,24 @@ export const initialProducts: Product[] = [
       'Distribution Sub-Stations',
     ],
     variants: [
-      { diameter: '50 mm', length: '2.0 m / 3.0 m', copperLayer: 'Dual Metal', partNumber: 'RUD-GIC-50' },
-      { diameter: '65 mm', length: '2.0 m / 3.0 m', copperLayer: 'Dual Metal', partNumber: 'RUD-GIC-65' },
-      { diameter: '80 mm', length: '3.0 m', copperLayer: 'Dual Metal', partNumber: 'RUD-GIC-80' },
+      {
+        diameter: '50 mm',
+        length: '2.0 m / 3.0 m',
+        copperLayer: 'Dual Metal',
+        partNumber: 'RUD-GIC-50',
+      },
+      {
+        diameter: '65 mm',
+        length: '2.0 m / 3.0 m',
+        copperLayer: 'Dual Metal',
+        partNumber: 'RUD-GIC-65',
+      },
+      {
+        diameter: '80 mm',
+        length: '3.0 m',
+        copperLayer: 'Dual Metal',
+        partNumber: 'RUD-GIC-80',
+      },
     ],
     relatedProductIds: [
       'gi-earthing-electrode',
@@ -269,19 +356,19 @@ export const initialProducts: Product[] = [
       'solar-earthing-kit',
     ],
   },
+
   {
     id: 'pure-copper-earthing-electrode',
     name: 'Pure Copper Earthing Electrode',
     slug: 'pure-copper-earthing-electrode',
     category: 'electrodes',
     categoryLabel: 'Earthing Electrodes & Rods',
-    shortDesc: '100% Solid Electrolytic Grade Copper (99.9%) electrode offering top-tier electrical conductance for ultra-sensitive equipment.',
-    fullDesc: 'Manufactured from premium ETP electrolytic grade copper pipe with 99.9% electrical conductivity. Specially built for high corrosive chemical environments, coastal marine zones, defense radars, sensitive hospital MRI/OT suites, and server rooms where zero compromise is permitted.',
+    shortDesc:
+      '100% Solid Electrolytic Grade Copper (99.9%) electrode offering top-tier electrical conductance for ultra-sensitive equipment.',
+    fullDesc:
+      'Manufactured from premium ETP electrolytic grade copper pipe with 99.9% electrical conductivity. Specially built for high corrosive chemical environments, coastal marine zones, defense radars, sensitive hospital MRI/OT suites, and server rooms where zero compromise is permitted.',
     images: [
-      copperRodsImg,
-      heroSubstationImg,
-      factoryImg,
-      copperRodsImg,
+      pureCopperEarthingElectrodeImg,
     ],
     highlights: [
       '99.9% Pure Electrolytic Copper (ETP Grade)',
@@ -299,7 +386,8 @@ export const initialProducts: Product[] = [
       material: '100% Pure Electrolytic Grade Copper (99.9% purity)',
       diameter: '40 mm / 50 mm / 65 mm',
       length: '2.0 m / 3.0 m',
-      copperLayerThickness: '100% Solid Copper Wall (2.5mm - 3.5mm wall)',
+      copperLayerThickness:
+        '100% Solid Copper Wall (2.5mm - 3.5mm wall)',
       tensileStrength: '≥ 260 N/mm² (Annealed Copper)',
       standards: 'IS 3043:2018, IEC 62561-2, BS 7430',
     },
@@ -310,9 +398,24 @@ export const initialProducts: Product[] = [
       'High-Speed Rail Signaling Systems',
     ],
     variants: [
-      { diameter: '40 mm', length: '2.0 m / 3.0 m', copperLayer: 'Solid Copper', partNumber: 'RUD-PCE-40' },
-      { diameter: '50 mm', length: '2.0 m / 3.0 m', copperLayer: 'Solid Copper', partNumber: 'RUD-PCE-50' },
-      { diameter: '65 mm', length: '3.0 m', copperLayer: 'Solid Copper', partNumber: 'RUD-PCE-65' },
+      {
+        diameter: '40 mm',
+        length: '2.0 m / 3.0 m',
+        copperLayer: 'Solid Copper',
+        partNumber: 'RUD-PCE-40',
+      },
+      {
+        diameter: '50 mm',
+        length: '2.0 m / 3.0 m',
+        copperLayer: 'Solid Copper',
+        partNumber: 'RUD-PCE-50',
+      },
+      {
+        diameter: '65 mm',
+        length: '3.0 m',
+        copperLayer: 'Solid Copper',
+        partNumber: 'RUD-PCE-65',
+      },
     ],
     relatedProductIds: [
       'copper-bonded-earthing-rod',
@@ -321,19 +424,19 @@ export const initialProducts: Product[] = [
     ],
     isPopular: true,
   },
+
   {
     id: 'ese-lightning-arrester',
     name: 'ESE Lightning Arrester',
     slug: 'ese-lightning-arrester',
     category: 'lightning',
     categoryLabel: 'Lightning Protection Systems',
-    shortDesc: 'Early Streamer Emission (ESE) lightning protection terminal with large radius coverage up to 120m radius.',
-    fullDesc: 'Rudra ESE (Early Streamer Emission) Lightning Arrester is an active protection terminal designed as per French Standard NFC 17-102:2011. During thunderstorm conditions, it produces an upward streamer ahead of surrounding structures, safely capturing lightning strikes and routing energy safely to ground.',
+    shortDesc:
+      'Early Streamer Emission (ESE) lightning protection terminal with large radius coverage up to 120m radius.',
+    fullDesc:
+      'Rudra ESE (Early Streamer Emission) Lightning Arrester is an active protection terminal designed as per French Standard NFC 17-102:2011. During thunderstorm conditions, it produces an upward streamer ahead of surrounding structures, safely capturing lightning strikes and routing energy safely to ground.',
     images: [
-      arresterImg,
-      heroSubstationImg,
-      factoryImg,
-      arresterImg,
+      eseLightningArresterImg,
     ],
     highlights: [
       'Coverage Radius up to 120 Metres',
@@ -351,9 +454,11 @@ export const initialProducts: Product[] = [
       material: 'AISI 304 / 316 Stainless Steel with Copper Internal Rod',
       diameter: 'Tip: 20 mm | Mast base: 1.5 - 2 inch thread',
       length: 'Total height: 450 mm - 600 mm',
-      copperLayerThickness: 'Stainless Steel Body + Solid Copper Core',
+      copperLayerThickness:
+        'Stainless Steel Body + Solid Copper Core',
       tensileStrength: '≥ 520 N/mm²',
-      standards: 'NFC 17-102:2011, UNE 21186, IEC 62305, CPRI Certified',
+      standards:
+        'NFC 17-102:2011, UNE 21186, IEC 62305, CPRI Certified',
     },
     applications: [
       'Large Industrial Complexes & Warehouses',
@@ -362,9 +467,24 @@ export const initialProducts: Product[] = [
       'Stadiums, Airports & High-Rise Towers',
     ],
     variants: [
-      { diameter: 'Tip 20 mm', length: 'ΔT = 25 µs', copperLayer: 'SS 316 Body', partNumber: 'RUD-ESE-25' },
-      { diameter: 'Tip 20 mm', length: 'ΔT = 45 µs', copperLayer: 'SS 316 Body', partNumber: 'RUD-ESE-45' },
-      { diameter: 'Tip 20 mm', length: 'ΔT = 60 µs (Max Protection)', copperLayer: 'SS 316 Body', partNumber: 'RUD-ESE-60' },
+      {
+        diameter: 'Tip 20 mm',
+        length: 'ΔT = 25 µs',
+        copperLayer: 'SS 316 Body',
+        partNumber: 'RUD-ESE-25',
+      },
+      {
+        diameter: 'Tip 20 mm',
+        length: 'ΔT = 45 µs',
+        copperLayer: 'SS 316 Body',
+        partNumber: 'RUD-ESE-45',
+      },
+      {
+        diameter: 'Tip 20 mm',
+        length: 'ΔT = 60 µs (Max Protection)',
+        copperLayer: 'SS 316 Body',
+        partNumber: 'RUD-ESE-60',
+      },
     ],
     relatedProductIds: [
       'conventional-lightning-arrester',
@@ -373,19 +493,19 @@ export const initialProducts: Product[] = [
     ],
     isPopular: true,
   },
+
   {
     id: 'conventional-lightning-arrester',
     name: 'Conventional Lightning Arrester',
     slug: 'conventional-lightning-arrester',
     category: 'lightning',
     categoryLabel: 'Lightning Protection Systems',
-    shortDesc: 'Franklin rod style copper and brass multi-prong air terminals with heavy elevation base mast.',
-    fullDesc: 'Traditional Franklin-type lightning protection terminals featuring a 5-prong or 3-prong solid brass / pure copper spike array. Provides passive intercept of atmospheric electrical charges, ideal for building parapets, chimneys, overhead water tanks, and substation gantries.',
+    shortDesc:
+      'Franklin rod style copper and brass multi-prong air terminals with heavy elevation base mast.',
+    fullDesc:
+      'Traditional Franklin-type lightning protection terminals featuring a 5-prong or 3-prong solid brass / pure copper spike array. Provides passive intercept of atmospheric electrical charges, ideal for building parapets, chimneys, overhead water tanks, and substation gantries.',
     images: [
-      arresterImg,
-      factoryImg,
-      copperRodsImg,
-      arresterImg,
+      conventionalLightningArresterImg,
     ],
     highlights: [
       'Solid Copper & Cast Brass Spike System',
@@ -414,9 +534,24 @@ export const initialProducts: Product[] = [
       'Water Treatment Facilities',
     ],
     variants: [
-      { diameter: '16 mm Rod', length: '1.0 m (3-Prong)', copperLayer: 'Pure Brass', partNumber: 'RUD-CLA-16' },
-      { diameter: '20 mm Rod', length: '1.5 m (5-Prong)', copperLayer: 'Pure Copper', partNumber: 'RUD-CLA-20' },
-      { diameter: '25 mm Rod', length: '2.0 m (5-Prong)', copperLayer: 'Pure Copper', partNumber: 'RUD-CLA-25' },
+      {
+        diameter: '16 mm Rod',
+        length: '1.0 m (3-Prong)',
+        copperLayer: 'Pure Brass',
+        partNumber: 'RUD-CLA-16',
+      },
+      {
+        diameter: '20 mm Rod',
+        length: '1.5 m (5-Prong)',
+        copperLayer: 'Pure Copper',
+        partNumber: 'RUD-CLA-20',
+      },
+      {
+        diameter: '25 mm Rod',
+        length: '2.0 m (5-Prong)',
+        copperLayer: 'Pure Copper',
+        partNumber: 'RUD-CLA-25',
+      },
     ],
     relatedProductIds: [
       'ese-lightning-arrester',
@@ -424,19 +559,19 @@ export const initialProducts: Product[] = [
       'earth-pit-cover',
     ],
   },
+
   {
     id: 'solar-earthing-kit',
     name: 'Solar Earthing Kit',
     slug: 'solar-earthing-kit',
     category: 'accessories',
     categoryLabel: 'Earthing & Lightning Protection Kits',
-    shortDesc: 'All-in-one solar ground mounting & inverter earthing kit designed for rooftop and utility-scale PV plants.',
-    fullDesc: 'Comprehensive turn-key earthing package specially tailored for solar installers and EPC contractors. Includes high quality copper bonded rods, earth backfill compound bags, bi-metallic clamps, solar module frame grounding clips, and heavy-duty inspection pit cover.',
+    shortDesc:
+      'All-in-one solar ground mounting & inverter earthing kit designed for rooftop and utility-scale PV plants.',
+    fullDesc:
+      'Comprehensive turn-key earthing package specially tailored for solar installers and EPC contractors. Includes high quality copper bonded rods, earth backfill compound bags, bi-metallic clamps, solar module frame grounding clips, and heavy-duty inspection pit cover.',
     images: [
-      heroSubstationImg,
-      copperRodsImg,
-      factoryImg,
-      arresterImg,
+      solarEarthingKitImg,
     ],
     highlights: [
       'Complete Plug-and-Play Kit for Solar PV',
@@ -451,7 +586,8 @@ export const initialProducts: Product[] = [
       'Brass Clamps, Washers & Nut-Bolts',
     ],
     specifications: {
-      material: 'Copper Bonded Rod + Conductive Compound + FRP Pit Cover',
+      material:
+        'Copper Bonded Rod + Conductive Compound + FRP Pit Cover',
       diameter: 'Rod: 17 mm | Pit: 300 x 300 mm',
       length: 'Rod: 2.0 m or 3.0 m',
       copperLayerThickness: '≥ 250 microns on Rod',
@@ -465,9 +601,24 @@ export const initialProducts: Product[] = [
       'EV Charging Stations',
     ],
     variants: [
-      { diameter: '14 mm Rod Kit', length: '2.0 m Kit', copperLayer: 'Standard Solar Kit', partNumber: 'RUD-SOL-14' },
-      { diameter: '17 mm Rod Kit', length: '3.0 m Kit (Recommended)', copperLayer: 'Heavy EPC Kit', partNumber: 'RUD-SOL-17' },
-      { diameter: 'Dual Rod Kit', length: '3.0 m x 2 Rods', copperLayer: 'MW Solar Special', partNumber: 'RUD-SOL-DUAL' },
+      {
+        diameter: '14 mm Rod Kit',
+        length: '2.0 m Kit',
+        copperLayer: 'Standard Solar Kit',
+        partNumber: 'RUD-SOL-14',
+      },
+      {
+        diameter: '17 mm Rod Kit',
+        length: '3.0 m Kit (Recommended)',
+        copperLayer: 'Heavy EPC Kit',
+        partNumber: 'RUD-SOL-17',
+      },
+      {
+        diameter: 'Dual Rod Kit',
+        length: '3.0 m x 2 Rods',
+        copperLayer: 'MW Solar Special',
+        partNumber: 'RUD-SOL-DUAL',
+      },
     ],
     relatedProductIds: [
       'copper-bonded-earthing-rod',
@@ -477,19 +628,19 @@ export const initialProducts: Product[] = [
     ],
     isPopular: true,
   },
+
   {
     id: 'earth-backfill-compound',
     name: 'Earth Backfill Compound',
     slug: 'earth-backfill-compound',
     category: 'compounds',
     categoryLabel: 'Earth Enhancement Materials',
-    shortDesc: 'Superior carbonaceous & bentonite based conductive chemical compound for low soil resistivity and moisture absorption.',
-    fullDesc: 'Rudra Earth Enhancement Backfill Compound is an environmentally safe, chemically inert conductive powder developed to reduce soil resistivity around grounding electrodes. It expands upon water absorption, firmly bonding the electrode to the surrounding earth and maintaining low impedance even in dry summer seasons.',
+    shortDesc:
+      'Superior carbonaceous & bentonite based conductive chemical compound for low soil resistivity and moisture absorption.',
+    fullDesc:
+      'Rudra Earth Enhancement Backfill Compound is an environmentally safe, chemically inert conductive powder developed to reduce soil resistivity around grounding electrodes. It expands upon water absorption, firmly bonding the electrode to the surrounding earth and maintaining low impedance even in dry summer seasons.',
     images: [
-      factoryImg,
-      copperRodsImg,
-      heroSubstationImg,
-      factoryImg,
+      earthBackfillCompoundImg,
     ],
     highlights: [
       'Cuts Soil Resistivity by up to 80%',
@@ -504,9 +655,12 @@ export const initialProducts: Product[] = [
       'RoHS & NABL Lab Tested',
     ],
     specifications: {
-      material: 'Carbonaceous Minerals + Processed Bentonite + Hydrating Agents',
-      diameter: 'Supplied in 15 kg / 25 kg moisture-proof HDPE bags',
-      length: 'Coverage: 1-2 bags per 3-meter earthing pit',
+      material:
+        'Carbonaceous Minerals + Processed Bentonite + Hydrating Agents',
+      diameter:
+        'Supplied in 15 kg / 25 kg moisture-proof HDPE bags',
+      length:
+        'Coverage: 1-2 bags per 3-meter earthing pit',
       copperLayerThickness: 'Resistivity: < 0.2 Ohm-meter',
       tensileStrength: 'Non-shrinking formulation',
       standards: 'IEC 62561-7, IEEE 80, IS 3043:2018',
@@ -518,9 +672,24 @@ export const initialProducts: Product[] = [
       'Telecom Mast Earthing Pits',
     ],
     variants: [
-      { diameter: '15 Kg Bag', length: 'Standard Grade', copperLayer: 'Resistivity < 0.2 Ω·m', partNumber: 'RUD-EBC-15' },
-      { diameter: '25 Kg Bag', length: 'Super Conductive Heavy', copperLayer: 'Resistivity < 0.12 Ω·m', partNumber: 'RUD-EBC-25' },
-      { diameter: '50 Kg Bulk', length: 'Bulk Industrial Pack', copperLayer: 'Ultra Low Resistivity', partNumber: 'RUD-EBC-50' },
+      {
+        diameter: '15 Kg Bag',
+        length: 'Standard Grade',
+        copperLayer: 'Resistivity < 0.2 Ω·m',
+        partNumber: 'RUD-EBC-15',
+      },
+      {
+        diameter: '25 Kg Bag',
+        length: 'Super Conductive Heavy',
+        copperLayer: 'Resistivity < 0.12 Ω·m',
+        partNumber: 'RUD-EBC-25',
+      },
+      {
+        diameter: '50 Kg Bulk',
+        length: 'Bulk Industrial Pack',
+        copperLayer: 'Ultra Low Resistivity',
+        partNumber: 'RUD-EBC-50',
+      },
     ],
     relatedProductIds: [
       'copper-bonded-earthing-rod',
@@ -529,19 +698,19 @@ export const initialProducts: Product[] = [
     ],
     isPopular: true,
   },
+
   {
     id: 'earth-pit-cover',
     name: 'Earth Pit Cover',
     slug: 'earth-pit-cover',
     category: 'accessories',
     categoryLabel: 'Earthing Clamps & Accessories',
-    shortDesc: 'Heavy-duty FRP / Polyplastic and Cast Iron inspection chambers with removable locking lid for test point access.',
-    fullDesc: 'Heavy-duty earth inspection chamber pit covers designed to safeguard grounding connections and facilitate periodic earth resistance testing. Tested for high compressive load ratings up to 5000 kg, making them suitable for foot traffic, parking lots, and heavy industrial vehicle driveways.',
+    shortDesc:
+      'Heavy-duty FRP / Polyplastic and Cast Iron inspection chambers with removable locking lid for test point access.',
+    fullDesc:
+      'Heavy-duty earth inspection chamber pit covers designed to safeguard grounding connections and facilitate periodic earth resistance testing. Tested for high compressive load ratings up to 5000 kg, making them suitable for foot traffic, parking lots, and heavy industrial vehicle driveways.',
     images: [
-      factoryImg,
-      heroSubstationImg,
-      copperRodsImg,
-      factoryImg,
+      earthPitCoverImg,
     ],
     highlights: [
       'High Load Bearing Capacity (Up to 5 Tons)',
@@ -556,10 +725,13 @@ export const initialProducts: Product[] = [
       'Embossed with Safety Earthing Symbol',
     ],
     specifications: {
-      material: 'UV Stabilized FRP / High Density Polypropylene / Cast Iron',
-      diameter: 'Top: 250 x 250 mm to 350 x 350 mm | Base: 300 to 400 mm',
+      material:
+        'UV Stabilized FRP / High Density Polypropylene / Cast Iron',
+      diameter:
+        'Top: 250 x 250 mm to 350 x 350 mm | Base: 300 to 400 mm',
       length: 'Depth: 250 mm to 300 mm',
-      copperLayerThickness: 'Compressive Load: 2 to 5 Metric Tons',
+      copperLayerThickness:
+        'Compressive Load: 2 to 5 Metric Tons',
       tensileStrength: 'High Impact Resistant Polymeric Blend',
       standards: 'IEC 62561-5, IS 3043',
     },
@@ -570,9 +742,24 @@ export const initialProducts: Product[] = [
       'Substation Switchyards',
     ],
     variants: [
-      { diameter: 'Round 10 inch', length: 'Polypropylene (2 Ton)', copperLayer: 'Green/Black', partNumber: 'RUD-EPC-R10' },
-      { diameter: 'Square 12x12 inch', length: 'Heavy Duty FRP (5 Ton)', copperLayer: 'Terracotta/Green', partNumber: 'RUD-EPC-SQ12' },
-      { diameter: 'Cast Iron Heavy', length: 'Driveway Grade (10 Ton)', copperLayer: 'Bitumen Black', partNumber: 'RUD-EPC-CI' },
+      {
+        diameter: 'Round 10 inch',
+        length: 'Polypropylene (2 Ton)',
+        copperLayer: 'Green/Black',
+        partNumber: 'RUD-EPC-R10',
+      },
+      {
+        diameter: 'Square 12x12 inch',
+        length: 'Heavy Duty FRP (5 Ton)',
+        copperLayer: 'Terracotta/Green',
+        partNumber: 'RUD-EPC-SQ12',
+      },
+      {
+        diameter: 'Cast Iron Heavy',
+        length: 'Driveway Grade (10 Ton)',
+        copperLayer: 'Bitumen Black',
+        partNumber: 'RUD-EPC-CI',
+      },
     ],
     relatedProductIds: [
       'copper-bonded-earthing-rod',
