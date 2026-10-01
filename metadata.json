@@ -1,0 +1,6 @@
+{
+  "name": "Rudra Earthing Systems",
+  "description": "Leading manufacturer of Copper Bonded Earthing Rods, Electrodes, and Lightning Protection Solutions. Safe Today, Secure Tomorrow.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
