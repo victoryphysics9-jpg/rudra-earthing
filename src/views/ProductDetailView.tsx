@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ChevronRight,
   ShieldCheck,
@@ -17,10 +17,9 @@ import {
   ZoomIn,
   Flame,
 } from 'lucide-react';
+
 import { Product } from '../types';
 import { siteConfig } from '../config/siteConfig';
-
-import heroSubstationImg from '../assets/images/rudra_hero_substation_1790859117610.jpg';
 
 interface ProductDetailViewProps {
   product: Product;
@@ -31,7 +30,7 @@ interface ProductDetailViewProps {
   onOpenImageLightbox: (url: string, title?: string) => void;
 }
 
-export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
+const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   product,
   allProducts,
   onNavigate,
@@ -42,452 +41,684 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  const relatedProducts = allProducts.filter((p) =>
-    product.relatedProductIds.includes(p.id)
+  /*
+   * Product images are now the single source of truth.
+   * No old JPG hero image is required.
+   */
+  const productImages = useMemo(
+    () => product.images?.filter(Boolean) ?? [],
+    [product.images]
   );
 
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
+  const currentDisplayImage =
+    productImages[selectedImageIndex] || productImages[0] || '';
+
+  const heroImage = productImages[0] || '';
+
+  const relatedProducts = useMemo(
+    () =>
+      allProducts.filter((item) =>
+        product.relatedProductIds?.includes(item.id)
+      ),
+    [allProducts, product.relatedProductIds]
+  );
+
+  const titleParts = product.name.trim().split(/\s+/);
+  const whiteTitle = titleParts.slice(0, 2).join(' ');
+  const amberTitle = titleParts.slice(2).join(' ');
+
+  const handleShare = async () => {
+    const url = window.location.href;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: product.name,
+          text: product.shortDesc,
+          url,
+        });
+        return;
+      }
+
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+
+        setCopiedLink(true);
+
+        window.setTimeout(() => {
+          setCopiedLink(false);
+        }, 2000);
+      }
+    } catch {
+      // User cancelled share dialog or browser blocked clipboard.
+    }
   };
 
-  const titleParts = product.name.split(' ');
-  const mainFirstWord = titleParts.slice(0, 2).join(' ');
-  const mainRestWords = titleParts.slice(2).join(' ');
-
-  const currentDisplayImage = product.images[selectedImageIndex] || product.images[0];
+  const applicationIcons = [Sun, Factory, Building2, Radio];
 
   return (
-    <div className="bg-slate-50 min-h-screen text-slate-800">
-      {/* 1. TOP BREADCRUMB & HERO BANNER */}
-      <section className="relative bg-[#070f1a] text-white overflow-hidden py-10 md:py-14 border-b border-slate-800">
-        <div className="absolute inset-0 z-0">
-          <img
-            src={heroSubstationImg}
-            alt="Product Background"
-            className="w-full h-full object-cover opacity-25 mix-blend-luminosity cursor-pointer"
-            referrerPolicy="no-referrer"
-            onDoubleClick={() => onOpenImageLightbox(heroSubstationImg, 'Industrial Grid Substation Backdrop')}
-            title="Double-click to view fullscreen"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#070f1a] via-[#070f1a]/90 to-[#070f1a]/50" />
-        </div>
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* =========================================================
+          HERO
+      ========================================================== */}
+      <section className="relative isolate overflow-hidden bg-slate-950">
+        {/* Product image background */}
+        {heroImage && (
+          <div className="absolute inset-0 -z-20">
+            <img
+              src={heroImage}
+              alt=""
+              aria-hidden="true"
+              className="h-full w-full object-cover object-center opacity-20 blur-[2px] scale-105"
+            />
+          </div>
+        )}
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        {/* Dark overlays */}
+        <div className="absolute inset-0 -z-10 bg-slate-950/85" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950 via-slate-950/90 to-slate-950/70" />
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-slate-950 to-transparent" />
+
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-xs text-slate-400">
-            <button onClick={() => onNavigate('home')} className="hover:text-white transition-colors">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-8 flex flex-wrap items-center gap-2 text-sm text-slate-400"
+          >
+            <button
+              type="button"
+              onClick={() => onNavigate('home')}
+              className="transition-colors hover:text-white"
+            >
               Home
             </button>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-            <button onClick={() => onNavigate('products')} className="hover:text-white transition-colors">
+
+            <ChevronRight className="h-4 w-4" />
+
+            <button
+              type="button"
+              onClick={() => onNavigate('products')}
+              className="transition-colors hover:text-white"
+            >
               Products
             </button>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-            <span className="text-slate-400">{product.categoryLabel}</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-            <span className="text-amber-400 font-semibold">{product.name}</span>
+
+            <ChevronRight className="h-4 w-4" />
+
+            <span
+              className="max-w-[220px] truncate text-slate-200"
+              aria-current="page"
+            >
+              {product.name}
+            </span>
           </nav>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Left Header info */}
-            <div className="lg:col-span-8 space-y-4">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
-                {mainFirstWord}{' '}
-                <span className="text-amber-500">{mainRestWords || ''}</span>
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+            {/* Hero content */}
+            <div>
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-orange-400/30 bg-orange-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-orange-300">
+                <ShieldCheck className="h-4 w-4" />
+                Industrial Grade Solution
+              </div>
+
+              <h1 className="max-w-4xl text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+                <span className="text-white">{whiteTitle}</span>{' '}
+                {amberTitle && (
+                  <span className="text-orange-400">{amberTitle}</span>
+                )}
               </h1>
-              <p className="text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
+
+              <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
                 {product.shortDesc}
               </p>
 
-              {/* 4 Feature Highlights */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
-                {product.highlights.map((highlight, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-xl bg-slate-900/80 border border-slate-700/80 backdrop-blur-sm flex items-start gap-2.5"
-                  >
-                    <div className="text-amber-500 shrink-0 mt-0.5">
-                      {idx === 0 && <Zap className="w-4 h-4" />}
-                      {idx === 1 && <ShieldCheck className="w-4 h-4" />}
-                      {idx === 2 && <Clock className="w-4 h-4" />}
-                      {idx === 3 && <CheckCircle2 className="w-4 h-4" />}
+              {/* Highlights */}
+              {product.highlights?.length > 0 && (
+                <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                  {product.highlights.slice(0, 4).map((highlight, index) => (
+                    <div
+                      key={`${highlight}-${index}`}
+                      className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.05] p-4 backdrop-blur-sm"
+                    >
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-orange-400" />
+
+                      <span className="text-sm font-medium leading-6 text-slate-200">
+                        {highlight}
+                      </span>
                     </div>
-                    <span className="text-xs font-semibold text-slate-200 leading-tight">
-                      {highlight}
-                    </span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              )}
+
+              {/* Hero CTAs */}
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={() => onOpenQuoteModal(product.id)}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-sm font-extrabold text-white shadow-lg shadow-orange-500/20 transition-all hover:-translate-y-0.5 hover:bg-orange-400"
+                >
+                  Request a Quote
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={onOpenCatalogueModal}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-bold text-white transition-all hover:bg-white/10"
+                >
+                  <Download className="h-4 w-4" />
+                  Product Catalogue
+                </button>
               </div>
             </div>
 
-            {/* Right Header Visual */}
-            <div className="lg:col-span-4 hidden lg:block">
-              <div
-                className="relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-2xl p-1 bg-gradient-to-tr from-amber-500/20 to-transparent cursor-pointer group"
-                onDoubleClick={() => onOpenImageLightbox(product.images[0], product.name)}
-                title="Double-click to inspect fullscreen"
-              >
-                <img
-                  src={product.images[0]}
-                  alt={product.name}
-                  className="rounded-xl w-full h-52 object-cover group-hover:scale-105 transition-transform"
-                  referrerPolicy="no-referrer"
-                />
+            {/* Hero product image */}
+            <div className="relative">
+              <div className="absolute inset-8 rounded-full bg-orange-500/20 blur-3xl" />
+
+              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.06] p-5 shadow-2xl backdrop-blur-sm sm:p-8">
+                <div className="absolute right-5 top-5 rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-orange-300">
+                  Rudra Earthing
+                </div>
+
+                {heroImage ? (
+                  <img
+                    src={heroImage}
+                    alt={product.name}
+                    className="relative z-10 mx-auto h-[300px] w-full object-contain sm:h-[390px] lg:h-[450px]"
+                    loading="eager"
+                  />
+                ) : (
+                  <div className="flex h-[300px] items-center justify-center text-sm text-slate-500 sm:h-[390px]">
+                    Product image unavailable
+                  </div>
+                )}
+
+                <div className="relative z-10 mt-4 flex items-center justify-between border-t border-white/10 pt-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-widest text-slate-500">
+                      Product
+                    </p>
+
+                    <p className="mt-1 text-sm font-bold text-white">
+                      {product.name}
+                    </p>
+                  </div>
+
+                  <div className="rounded-full bg-orange-500/10 p-2.5 text-orange-400">
+                    <Zap className="h-5 w-5" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. MAIN PRODUCT OVERVIEW: GALLERY + DETAILS + SPEC TABLE */}
-      <section className="py-12 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* LEFT: GALLERY */}
-            <div className="lg:col-span-4 flex flex-col sm:flex-row gap-4">
-              {/* Vertical thumbnail list */}
-              <div className="flex sm:flex-col gap-2 order-2 sm:order-1">
-                {product.images.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImageIndex(index)}
-                    onDoubleClick={() => onOpenImageLightbox(img, `${product.name} - View ${index + 1}`)}
-                    className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
-                      selectedImageIndex === index
-                        ? 'border-amber-500 ring-2 ring-amber-500/30'
-                        : 'border-slate-200 opacity-70 hover:opacity-100'
-                    }`}
-                    title="Click to select, double-click for fullscreen"
-                  >
+      {/* =========================================================
+          MAIN PRODUCT INFORMATION
+      ========================================================== */}
+      <main>
+        <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+          <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+            {/* =====================================================
+                GALLERY
+            ====================================================== */}
+            <div>
+              <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-slate-50">
+                {currentDisplayImage ? (
+                  <>
                     <img
-                      src={img}
-                      alt={`Thumbnail ${index + 1}`}
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
+                      src={currentDisplayImage}
+                      alt={product.name}
+                      className="h-[360px] w-full cursor-zoom-in object-contain p-8 transition-transform duration-500 group-hover:scale-[1.02] sm:h-[500px] sm:p-12"
+                      onDoubleClick={() =>
+                        onOpenImageLightbox(
+                          currentDisplayImage,
+                          product.name
+                        )
+                      }
                     />
-                  </button>
-                ))}
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onOpenImageLightbox(
+                          currentDisplayImage,
+                          product.name
+                        )
+                      }
+                      aria-label={`View ${product.name} image fullscreen`}
+                      className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white/95 px-4 py-2.5 text-xs font-bold text-slate-700 shadow-sm backdrop-blur transition hover:bg-white"
+                    >
+                      <ZoomIn className="h-4 w-4" />
+                      View Fullscreen
+                    </button>
+                  </>
+                ) : (
+                  <div className="flex h-[360px] items-center justify-center text-sm text-slate-400 sm:h-[500px]">
+                    Product image unavailable
+                  </div>
+                )}
               </div>
 
-              {/* Main zoomable preview */}
-              <div
-                className="flex-1 rounded-2xl border border-slate-200 overflow-hidden relative group bg-slate-100 order-1 sm:order-2 cursor-pointer"
-                onDoubleClick={() => onOpenImageLightbox(currentDisplayImage, product.name)}
-                title="Double-click to open high-resolution fullscreen"
-              >
-                <img
-                  src={currentDisplayImage}
-                  alt={product.name}
-                  className="w-full h-72 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onOpenImageLightbox(currentDisplayImage, product.name);
-                  }}
-                  className="absolute bottom-3 right-3 p-2 bg-black/60 hover:bg-black/90 text-white rounded-lg backdrop-blur-sm transition-colors flex items-center gap-1.5 text-xs"
-                >
-                  <ZoomIn className="w-4 h-4" />
-                  <span className="hidden sm:inline font-semibold">Fullscreen</span>
-                </button>
-              </div>
+              {/* Thumbnails */}
+              {productImages.length > 1 && (
+                <div className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-5">
+                  {productImages.map((image, index) => (
+                    <button
+                      type="button"
+                      key={`${image}-${index}`}
+                      onClick={() => setSelectedImageIndex(index)}
+                      aria-label={`View image ${index + 1}`}
+                      aria-pressed={selectedImageIndex === index}
+                      className={`overflow-hidden rounded-xl border bg-slate-50 transition-all ${
+                        selectedImageIndex === index
+                          ? 'border-orange-500 ring-2 ring-orange-500/20'
+                          : 'border-slate-200 hover:border-slate-400'
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        alt={`${product.name} view ${index + 1}`}
+                        className="h-20 w-full object-contain p-2 sm:h-24"
+                        loading="lazy"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* CENTER: PRODUCT DESCRIPTION & CTAS */}
-            <div className="lg:col-span-5 space-y-5">
+            {/* =====================================================
+                OVERVIEW
+            ====================================================== */}
+            <div>
+              <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-orange-600">
+                <span className="h-px w-8 bg-orange-500" />
+                Product Overview
+              </div>
+
+              <h2 className="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+                Built for reliable earthing performance
+              </h2>
+
+              
+              {/* Key Features */}
+              {product.keyFeatures?.length > 0 && (
+                <div className="mt-8">
+                  <h3 className="text-lg font-extrabold text-slate-950">
+                    Key Features
+                  </h3>
+
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {product.keyFeatures.map((feature, index) => (
+                      <div
+                        key={`${feature}-${index}`}
+                        className="flex gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                      >
+                        <div className="mt-0.5 rounded-lg bg-orange-50 p-2 text-orange-600">
+                          <CheckCircle2 className="h-4 w-4" />
+                        </div>
+
+                        <span className="text-sm font-medium leading-6 text-slate-700">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => onOpenQuoteModal(product.id)}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3.5 text-sm font-extrabold text-white transition hover:bg-slate-800"
+                >
+                  Get Product Quote
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={onOpenCatalogueModal}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-bold text-slate-800 transition hover:border-slate-300 hover:bg-slate-50"
+                >
+                  <Download className="h-4 w-4" />
+                  Download Catalogue
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-bold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                >
+                  {copiedLink ? (
+                    <>
+                      <Check className="h-4 w-4 text-green-600" />
+                      Link Copied
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="h-4 w-4" />
+                      Share
+                    </>
+                  )}
+                </button>
+              </div>
+
+              
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================
+            CUSTOM SOLUTION
+        ========================================================== */}
+        <section className="border-y border-slate-200 bg-slate-50">
+          <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+            <div className="flex flex-col gap-6 rounded-3xl bg-slate-950 p-7 shadow-xl sm:p-10 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-3xl">
+                <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-orange-400">
+                  <Flame className="h-4 w-4" />
+                  Project Requirements
+                </div>
+
+                <h3 className="text-2xl font-black text-white sm:text-3xl">
+                  Need a customised earthing solution?
+                </h3>
+
+                <p className="mt-3 text-sm leading-7 text-slate-400 sm:text-base">
+                  Share your project requirements, site conditions and
+                  technical specifications with our team for a suitable
+                  product configuration.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => onOpenQuoteModal(product.id)}
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-sm font-extrabold text-white transition hover:bg-orange-400"
+              >
+                Discuss Your Requirement
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================
+            APPLICATIONS
+        ========================================================== */}
+        {product.applications?.length > 0 && (
+          <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+            <div className="max-w-2xl">
+              <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-orange-600">
+                <span className="h-px w-8 bg-orange-500" />
+                Applications
+              </div>
+
+              <h2 className="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+                Designed for demanding environments
+              </h2>
+
+              <p className="mt-4 leading-7 text-slate-600">
+                Suitable for industrial, commercial, infrastructure and
+                specialised electrical installations.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {product.applications.map((application, index) => {
+                const Icon =
+                  applicationIcons[index % applicationIcons.length];
+
+                return (
+                  <div
+                    key={`${application}-${index}`}
+                    className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-lg"
+                  >
+                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-50 text-orange-600 transition group-hover:bg-orange-500 group-hover:text-white">
+                      <Icon className="h-5 w-5" />
+                    </div>
+
+                    <h3 className="font-extrabold text-slate-900">
+                      {application}
+                    </h3>
+
+                    <p className="mt-2 text-sm leading-6 text-slate-500">
+                      Reliable earthing and protection for demanding
+                      installations.
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* =========================================================
+            VARIANTS
+        ========================================================== */}
+        {product.variants?.length > 0 && (
+  <section className="bg-slate-50">
+    <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-orange-600">
+            <span className="h-px w-8 bg-orange-500" />
+            Product Variants
+          </div>
+
+          <h2 className="text-3xl font-black text-slate-950 sm:text-4xl">
+            Available configurations
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => onOpenQuoteModal(product.id)}
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-800 shadow-sm transition hover:border-orange-300 hover:text-orange-600"
+        >
+          Ask for Pricing
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table className="min-w-[680px] w-full border-collapse text-left">
+          <thead>
+            <tr className="bg-slate-950 text-white">
+              <th className="px-5 py-4 text-xs font-bold uppercase tracking-wider">
+                Variant
+              </th>
+
+              <th className="px-5 py-4 text-xs font-bold uppercase tracking-wider">
+                Diameter
+              </th>
+
+              <th className="px-5 py-4 text-xs font-bold uppercase tracking-wider">
+                Length
+              </th>
+
+              <th className="px-5 py-4 text-xs font-bold uppercase tracking-wider">
+                Specification
+              </th>
+
+              <th className="px-5 py-4 text-xs font-bold uppercase tracking-wider">
+                Action
+              </th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-slate-100">
+            {product.variants.map((variant, index) => (
+              <tr
+                key={`${variant.diameter}-${variant.length}-${index}`}
+                className="transition hover:bg-orange-50/40"
+              >
+                <td className="px-5 py-4 text-sm font-bold text-slate-900">
+                  Variant {index + 1}
+                </td>
+
+                <td className="px-5 py-4 text-sm text-slate-600">
+                  {variant.diameter || '—'}
+                </td>
+
+                <td className="px-5 py-4 text-sm text-slate-600">
+                  {variant.length || '—'}
+                </td>
+
+                <td className="px-5 py-4 text-sm text-slate-600">
+                  {variant.copperLayer || '—'}
+                </td>
+
+                <td className="px-5 py-4">
+                  <button
+                    type="button"
+                    onClick={() => onOpenQuoteModal(product.id)}
+                    className="whitespace-nowrap text-sm font-extrabold text-orange-600 hover:text-orange-700"
+                  >
+                    Get Quote
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+)}
+
+        {/* =========================================================
+            RELATED PRODUCTS
+        ========================================================== */}
+        {relatedProducts.length > 0 && (
+          <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <span className="text-xs font-black tracking-widest text-amber-600 uppercase block mb-1">
-                  PREMIUM QUALITY
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  {product.name}
+                <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-orange-600">
+                  <span className="h-px w-8 bg-orange-500" />
+                  Related Products
+                </div>
+
+                <h2 className="text-3xl font-black text-slate-950 sm:text-4xl">
+                  Explore more solutions
                 </h2>
               </div>
 
-              <p className="text-slate-600 text-sm leading-relaxed">
-                {product.fullDesc}
-              </p>
+              <button
+                type="button"
+                onClick={() => onNavigate('products')}
+                className="inline-flex items-center gap-2 text-sm font-extrabold text-orange-600 hover:text-orange-700"
+              >
+                View All Products
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
 
-              {/* 4 Feature Pills / Cards */}
-              <div className="grid grid-cols-2 gap-3 pt-1">
-                {product.keyFeatures.map((feat, i) => (
-                  <div
-                    key={i}
-                    className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2"
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {relatedProducts.slice(0, 4).map((relatedProduct) => {
+                const image = relatedProduct.images?.[0];
+
+                return (
+                  <button
+                    type="button"
+                    key={relatedProduct.id}
+                    onClick={() =>
+                      onNavigate('product-detail', relatedProduct.id)
+                    }
+                    className="group overflow-hidden rounded-2xl border border-slate-200 bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-xl"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center shrink-0 text-xs font-bold">
-                      <Zap className="w-3.5 h-3.5" />
+                    <div className="relative overflow-hidden bg-slate-50">
+                      {image ? (
+                        <img
+                          src={image}
+                          alt={relatedProduct.name}
+                          className="h-56 w-full object-contain p-6 transition-transform duration-500 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="flex h-56 items-center justify-center text-sm text-slate-400">
+                          Image unavailable
+                        </div>
+                      )}
+
+                      <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-orange-600 shadow-sm">
+                        Rudra
+                      </div>
                     </div>
-                    <span className="text-xs font-bold text-slate-800">
-                      {feat}
-                    </span>
-                  </div>
-                ))}
-              </div>
 
-              {/* CTAs */}
-              <div className="pt-3 flex flex-wrap items-center gap-3">
-                <button
-                  onClick={() => onOpenQuoteModal(product.id)}
-                  className="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-xs rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-2"
-                >
-                  <span>Request a Quote</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                    <div className="p-5">
+                      <p className="text-xs font-bold uppercase tracking-wider text-orange-600">
+                        {relatedProduct.category}
+                      </p>
 
-                <button
-                  onClick={onOpenCatalogueModal}
-                  className="px-5 py-3 border border-slate-300 hover:border-slate-800 text-slate-700 hover:text-slate-900 font-semibold text-xs rounded-xl transition-colors flex items-center gap-2 bg-white"
-                >
-                  <Download className="w-4 h-4 text-amber-600" />
-                  <span>Download Brochure</span>
-                </button>
+                      <h3 className="mt-2 line-clamp-2 text-lg font-extrabold leading-6 text-slate-950">
+                        {relatedProduct.name}
+                      </h3>
 
-                <button
-                  onClick={handleShare}
-                  className="p-3 border border-slate-200 hover:bg-slate-50 rounded-xl text-slate-500 transition-colors"
-                  title="Share link"
-                >
-                  {copiedLink ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4" />}
-                </button>
-              </div>
+                      <div className="mt-4 flex items-center gap-2 text-sm font-bold text-slate-700 transition group-hover:text-orange-600">
+                        View Product
+                        <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
+          </section>
+        )}
 
-            {/* RIGHT: KEY SPECIFICATIONS TABLE */}
-            <div className="lg:col-span-3 space-y-4">
-              <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5 space-y-4">
-                <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
-                  Key Specifications
-                </h3>
-
-                <div className="divide-y divide-slate-200/80 text-xs">
-                  <div className="py-2 flex items-center justify-between">
-                    <span className="text-slate-500">Material</span>
-                    <span className="font-semibold text-slate-800 text-right">{product.specifications.material}</span>
-                  </div>
-                  <div className="py-2 flex items-center justify-between">
-                    <span className="text-slate-500">Diameter</span>
-                    <span className="font-semibold text-slate-800">{product.specifications.diameter}</span>
-                  </div>
-                  <div className="py-2 flex items-center justify-between">
-                    <span className="text-slate-500">Length</span>
-                    <span className="font-semibold text-slate-800">{product.specifications.length}</span>
-                  </div>
-                  <div className="py-2 flex items-center justify-between">
-                    <span className="text-slate-500">Copper Layer</span>
-                    <span className="font-semibold text-slate-800">{product.specifications.copperLayerThickness}</span>
-                  </div>
-                  <div className="py-2 flex items-center justify-between">
-                    <span className="text-slate-500">Tensile Strength</span>
-                    <span className="font-semibold text-slate-800">{product.specifications.tensileStrength}</span>
-                  </div>
-                  <div className="py-2 flex items-center justify-between">
-                    <span className="text-slate-500">Standards</span>
-                    <span className="font-semibold text-slate-800 text-right">{product.specifications.standards}</span>
-                  </div>
+        {/* =========================================================
+            BOTTOM CTA
+        ========================================================== */}
+        <section className="border-t border-slate-200 bg-slate-950">
+          <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
+            <div className="grid items-center gap-8 lg:grid-cols-[1fr_auto]">
+              <div>
+                <div className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-orange-400">
+                  <Clock className="h-4 w-4" />
+                  Talk to Our Team
                 </div>
-              </div>
 
-              {/* Need a custom solution box */}
-              <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-4 space-y-2">
-                <div className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
-                  <Flame className="w-4 h-4 text-amber-600" />
-                  <span>Need a custom solution?</span>
-                </div>
-                <p className="text-[11px] text-amber-800 leading-relaxed">
-                  Our engineering team can help you select the exact copper micron and length based on your soil resistivity test.
+                <h2 className="max-w-3xl text-3xl font-black tracking-tight text-white sm:text-4xl">
+                  Looking for the right earthing solution for your project?
+                </h2>
+
+                <p className="mt-4 max-w-2xl leading-7 text-slate-400">
+                  Get technical assistance, product details and a project
+                  specific quotation from the Rudra Earthing team.
                 </p>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
                 <button
-                  onClick={() => onNavigate('contact')}
-                  className="text-xs font-bold text-amber-700 hover:text-amber-900 inline-flex items-center gap-1 mt-1"
+                  type="button"
+                  onClick={() => onOpenQuoteModal(product.id)}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-sm font-extrabold text-white transition hover:bg-orange-400"
                 >
-                  <span>Get in Touch</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  Request a Quote
+                  <ArrowRight className="h-4 w-4" />
                 </button>
+
+                <a
+                  href={`tel:${siteConfig.PHONE_RAW}`}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-white/10"
+                >
+                  <Phone className="h-4 w-4" />
+                  {siteConfig.PHONE_DISPLAY}
+                </a>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* 3. APPLICATIONS GRID */}
-      <section className="py-14 bg-slate-50 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <div>
-            <h3 className="text-lg font-bold text-slate-900">
-              Applications
-            </h3>
-            <p className="text-xs text-slate-500">
-              Ideal for a wide range of applications including:
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {product.applications.map((app, idx) => (
-              <div
-                key={idx}
-                className="bg-white p-4 rounded-xl border border-slate-200 text-center space-y-2 shadow-xs hover:border-amber-400 hover:shadow-sm transition-all"
-              >
-                <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 mx-auto flex items-center justify-center">
-                  {idx % 4 === 0 && <Sun className="w-5 h-5" />}
-                  {idx % 4 === 1 && <Factory className="w-5 h-5" />}
-                  {idx % 4 === 2 && <Building2 className="w-5 h-5" />}
-                  {idx % 4 === 3 && <Radio className="w-5 h-5" />}
-                </div>
-                <div className="text-xs font-bold text-slate-800">{app}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. PRODUCT VARIANTS TABLE */}
-      <section className="py-14 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <div>
-            <h3 className="text-lg font-bold text-slate-900">
-              Product Variants
-            </h3>
-            <p className="text-xs text-slate-500">
-              Standard manufacturing dimensions and thicknesses
-            </p>
-          </div>
-
-          <div className="overflow-x-auto rounded-xl border border-slate-200">
-            <table className="min-w-full divide-y divide-slate-200 text-xs">
-              <thead className="bg-slate-50">
-                <tr>
-                  <th className="px-6 py-3 text-left font-bold text-slate-700 uppercase tracking-wider">
-                    Diameter (mm)
-                  </th>
-                  <th className="px-6 py-3 text-left font-bold text-slate-700 uppercase tracking-wider">
-                    Length (m)
-                  </th>
-                  <th className="px-6 py-3 text-left font-bold text-slate-700 uppercase tracking-wider">
-                    Copper Layer (µm)
-                  </th>
-                  <th className="px-6 py-3 text-right font-bold text-slate-700 uppercase tracking-wider">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-slate-100 font-medium">
-                {product.variants.map((variant, i) => (
-                  <tr key={i} className="hover:bg-amber-50/50 transition-colors">
-                    <td className="px-6 py-3 text-slate-900 font-bold">{variant.diameter}</td>
-                    <td className="px-6 py-3 text-slate-600">{variant.length}</td>
-                    <td className="px-6 py-3 text-slate-600">{variant.copperLayer}</td>
-                    <td className="px-6 py-3 text-right">
-                      <button
-                        onClick={() => onOpenQuoteModal(product.id)}
-                        className="text-amber-600 hover:text-amber-700 font-bold"
-                      >
-                        Enquire This Size
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="text-[11px] text-slate-400">
-            ⓘ Custom sizes, diameters up to 32mm, and length up to 6.0 meters are available on request.
-          </p>
-        </div>
-      </section>
-
-      {/* 5. RELATED PRODUCTS */}
-      <section className="py-14 bg-slate-50 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-slate-900">
-              Related Products
-            </h3>
-            <button
-              onClick={() => onNavigate('products')}
-              className="text-xs font-bold text-amber-600 hover:text-amber-700"
-            >
-              View Full Range →
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedProducts.slice(0, 4).map((rel) => (
-              <div
-                key={rel.id}
-                onClick={() => onNavigate('product-detail', rel.id)}
-                className="cursor-pointer bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-lg transition-all group flex flex-col justify-between"
-              >
-                <div>
-                  <div
-                    className="h-40 bg-slate-100 overflow-hidden relative"
-                    onDoubleClick={(e) => {
-                      e.stopPropagation();
-                      onOpenImageLightbox(rel.images[0], rel.name);
-                    }}
-                    title="Double-click to inspect fullscreen"
-                  >
-                    <img
-                      src={rel.images[0]}
-                      alt={rel.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <div className="p-4 space-y-1">
-                    <h4 className="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors">
-                      {rel.name}
-                    </h4>
-                    <p className="text-[11px] text-slate-500 line-clamp-2">
-                      {rel.shortDesc}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-4 pt-0 border-t border-slate-100 flex items-center justify-between text-xs text-amber-600 font-bold">
-                  <span>View Details</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. BOTTOM READY TO BUILD A SAFER FUTURE BANNER */}
-      <section className="bg-[#0b1626] py-10 border-t border-slate-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-1 text-center md:text-left">
-            <h3 className="text-xl sm:text-2xl font-bold text-white">
-              Ready to Build a Safer Future?
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-300">
-              Get the right earthing solution for your project. Our experts are here to help.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => onOpenQuoteModal(product.id)}
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-xs shadow-md transition-all active:scale-95"
-            >
-              Request a Quote
-            </button>
-
-            <a
-              href={`tel:${siteConfig.PHONE_RAW}`}
-              className="px-5 py-2.5 rounded-xl border border-slate-600 hover:border-white text-white font-semibold text-xs flex items-center gap-2 transition-all hover:bg-white/10"
-            >
-              <Phone className="w-3.5 h-3.5 text-amber-400" />
-              <span>Call Us Now {siteConfig.PHONE_DISPLAY}</span>
-            </a>
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </div>
   );
 };
+
+export default ProductDetailView;

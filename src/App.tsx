@@ -13,7 +13,7 @@ import { ImageLightboxModal } from './components/ImageLightboxModal';
 
 import { HomeView } from './views/HomeView';
 import { ProductsView } from './views/ProductsView';
-import { ProductDetailView } from './views/ProductDetailView';
+import ProductDetailView from './views/ProductDetailView';
 import { SolutionsView } from './views/SolutionsView';
 import { AboutView } from './views/AboutView';
 import { ProjectsView } from './views/ProjectsView';

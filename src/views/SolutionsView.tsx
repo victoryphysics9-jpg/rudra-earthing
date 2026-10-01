@@ -10,7 +10,8 @@ import {
   CheckCircle2,
   ArrowRight,
 } from 'lucide-react';
-import heroSubstationImg from '../assets/images/rudra_hero_substation_1790859117610.jpg';
+
+import eseLightningArresterImg from '../assets/images/ese lightning arrester.png';
 
 interface SolutionsViewProps {
   onNavigate: (view: string, productId?: string) => void;
@@ -109,101 +110,198 @@ export const SolutionsView: React.FC<SolutionsViewProps> = ({
   ];
 
   return (
-    <div className="bg-slate-50 min-h-screen py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        {/* Banner */}
-        <div className="relative rounded-3xl overflow-hidden bg-slate-900 text-white p-8 sm:p-12 shadow-xl border border-slate-800">
-          <div className="absolute inset-0 z-0">
+    <div className="min-h-screen bg-slate-50">
+      {/* =========================================================
+          HERO / BANNER
+      ========================================================== */}
+      <section className="px-4 pt-8 sm:px-6 lg:px-8 lg:pt-12">
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 text-white shadow-xl">
+          {/* Product PNG background */}
+          <div className="absolute inset-0">
             <img
-              src={heroSubstationImg}
-              alt="Solutions banner"
-              className="w-full h-full object-cover opacity-20"
-              referrerPolicy="no-referrer"
+              src={eseLightningArresterImg}
+              alt=""
+              aria-hidden="true"
+              className="absolute right-0 top-1/2 h-[130%] w-[55%] -translate-y-1/2 object-contain opacity-20"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-transparent" />
+
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/95 to-slate-950/70" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_right,rgba(245,158,11,0.12),transparent_38%)]" />
           </div>
 
-          <div className="relative z-10 max-w-2xl space-y-4">
-            <span className="text-xs font-black tracking-widest text-amber-400 uppercase">
-              ENGINEERED SAFETY SYSTEMS
-            </span>
-            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
-              Turnkey Earthing &amp; Protection Solutions
-            </h1>
-            <p className="text-slate-300 text-sm leading-relaxed">
-              From high-voltage 400kV substations and utility-scale solar parks to critical IT data centers, Rudra designs and manufactures custom grounding systems tailored to site-specific soil resistivity.
-            </p>
-            <div className="pt-2">
-              <button
-                onClick={onOpenQuoteModal}
-                className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-md transition-all active:scale-95"
-              >
-                Discuss Your Project Specifications
-              </button>
+          <div className="relative z-10 px-6 py-12 sm:px-10 sm:py-16 lg:px-14 lg:py-20">
+            <div className="max-w-3xl">
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-500/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-amber-400">
+                <ShieldCheck className="h-4 w-4" />
+                Engineered Safety Systems
+              </div>
+
+              <h1 className="text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+                Turnkey Earthing &amp;
+                <span className="text-amber-400">
+                  {' '}
+                  Protection Solutions
+                </span>
+              </h1>
+
+              <p className="mt-6 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+                From high-voltage substations and utility-scale solar parks
+                to critical IT infrastructure, Rudra provides grounding and
+                lightning protection solutions tailored to project
+                requirements.
+              </p>
+
+              <div className="mt-8">
+                <button
+                  type="button"
+                  onClick={onOpenQuoteModal}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-6 py-3.5 text-sm font-extrabold text-white shadow-lg shadow-amber-500/20 transition-all hover:-translate-y-0.5 hover:bg-amber-400 active:scale-95"
+                >
+                  Discuss Your Project
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Solutions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* =========================================================
+          SOLUTIONS GRID
+      ========================================================== */}
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="text-xs font-black uppercase tracking-[0.2em] text-amber-600">
+            OUR SOLUTIONS
+          </span>
+
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
+            Grounding Solutions for Critical Infrastructure
+          </h2>
+
+          <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
+            Explore application-focused earthing and lightning protection
+            solutions for power, renewable energy, industrial, commercial and
+            telecom infrastructure.
+          </p>
+        </div>
+
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {solutions.map((item) => {
             const Icon = item.icon;
+
             return (
-              <div
+              <article
                 key={item.id}
-                className="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-sm hover:shadow-xl hover:border-amber-500/50 transition-all flex flex-col justify-between space-y-6"
+                className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-300 hover:shadow-xl"
               >
-                <div className="space-y-4">
-                  <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-                    <Icon className="w-6 h-6" />
+                <div className="flex-1">
+                  {/* Icon */}
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-all duration-300 group-hover:bg-amber-500 group-hover:text-white">
+                    <Icon className="h-6 w-6" />
                   </div>
 
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-bold text-slate-900">
+                  {/* Title */}
+                  <div className="mt-5">
+                    <h3 className="text-lg font-black leading-7 text-slate-950">
                       {item.title}
                     </h3>
-                    <div className="text-[11px] font-semibold text-amber-600">
+
+                    <div className="mt-2 text-[10px] font-extrabold uppercase leading-5 tracking-wide text-amber-600">
                       {item.standards}
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-600 leading-relaxed">
+                  {/* Description */}
+                  <p className="mt-4 text-sm leading-7 text-slate-600">
                     {item.desc}
                   </p>
 
-                  <div className="space-y-2 pt-2 border-t border-slate-100">
-                    <span className="text-[11px] font-bold text-slate-800 uppercase tracking-wider block">
-                      Key Highlights:
+                  {/* Key Points */}
+                  <div className="mt-5 border-t border-slate-100 pt-5">
+                    <span className="mb-3 block text-[10px] font-black uppercase tracking-[0.15em] text-slate-800">
+                      Key Highlights
                     </span>
-                    {item.keyPoints.map((pt, i) => (
-                      <div key={i} className="flex items-start gap-2 text-xs text-slate-600">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5" />
-                        <span>{pt}</span>
-                      </div>
-                    ))}
+
+                    <div className="space-y-2.5">
+                      {item.keyPoints.map((point, index) => (
+                        <div
+                          key={`${item.id}-point-${index}`}
+                          className="flex items-start gap-2.5 text-xs leading-5 text-slate-600"
+                        >
+                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500" />
+                          <span>{point}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                {/* Card Footer */}
+                <div className="mt-6 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
                   <button
-                    onClick={() => onNavigate('product-detail', item.recommendedProduct)}
-                    className="text-xs font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 group"
+                    type="button"
+                    onClick={() =>
+                      onNavigate(
+                        'product-detail',
+                        item.recommendedProduct
+                      )
+                    }
+                    className="group/link inline-flex items-center gap-1.5 text-xs font-extrabold text-amber-600 transition-colors hover:text-amber-700"
                   >
                     <span>View Recommended Product</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-1" />
                   </button>
+
                   <button
+                    type="button"
                     onClick={onOpenQuoteModal}
-                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold rounded-lg"
+                    className="inline-flex items-center justify-center rounded-lg bg-slate-100 px-4 py-2 text-xs font-bold text-slate-800 transition hover:bg-slate-950 hover:text-white"
                   >
-                    Quote
+                    Request Quote
                   </button>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
-      </div>
+      </section>
+
+      {/* =========================================================
+          BOTTOM CTA
+      ========================================================== */}
+      <section className="px-4 pb-14 sm:px-6 lg:px-8 lg:pb-20">
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl bg-amber-500 shadow-xl">
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+
+          <div className="relative flex flex-col items-center justify-between gap-7 px-6 py-10 sm:px-10 sm:py-12 lg:flex-row lg:px-14">
+            <div className="max-w-3xl text-center lg:text-left">
+              <div className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-amber-100">
+                ENGINEERING SUPPORT
+              </div>
+
+              <h3 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
+                Need a solution designed around your project?
+              </h3>
+
+              <p className="mt-3 text-sm leading-7 text-amber-100 sm:text-base">
+                Share your site conditions, project requirements and
+                technical specifications with our team.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={onOpenQuoteModal}
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-slate-950 px-7 py-3.5 text-sm font-extrabold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-black"
+            >
+              Discuss Your Project
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
